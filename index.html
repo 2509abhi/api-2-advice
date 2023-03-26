@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+  
+  <title>Frontend Mentor | Advice generator app</title>
+
+  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+  <style>
+    body{
+      background-color: hsl(218, 23%, 16%);
+      padding: 10rem 28rem;
+    }
+    #body{
+      background-color: hsl(217, 19%, 38%);
+      text-align: center;
+      width: 300px;
+      height: 300px;
+      padding: 3rem;
+    }
+    .h1{
+      margin: 3rem 0;
+    }
+    .cyan{
+      color: hsl(150, 100%, 66%);
+    }
+    .white{
+      color: hsl(193, 38%, 86%);
+    }
+    .divider{
+      position: relative;
+      bottom: 15px;
+      right: 80px;
+    }
+    .dice{
+      background-color: hsl(150, 100%, 66%);
+      border-radius: 30px;
+      display: inline-block;
+      position: relative;
+      top: 3rem;
+      padding: 1rem;
+    }
+    .dice:hover{
+      background-color: hsl(150, 86%, 73%);
+    }
+
+    .attribution { font-size: 11px; text-align: center; }
+    .attribution a { color: hsl(228, 45%, 44%); }
+    @media (max-width: 480px) {
+      body{
+        padding: 1rem;
+        padding-top: 4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<main id ="body">
+  <h3 class="cyan">Advice #1</h3>
+
+  <h2 class="white h1">"Remember that spiders are more afraid of you, than you are of them."</h2>
+  <hr>
+  <img class="divider" src="images/pattern-divider-desktop.svg" alt="divider">
+  <a href="#" class="dice"><img src="images/icon-dice.svg" alt="dice"></a>
+</main>
+  <div class="attribution">
+    <p>Challenge by <a href="https://www.frontendmentor.io?ref=challenge" >Frontend Mentor</a>. 
+    Coded by <a href="#">Abhishek Bansal</a>.</p>
+  </div>
+  <script>
+    document.querySelector(".dice").addEventListener("click", function(){
+      document.querySelector(".dice").addEventListener("click", function () {
+     const req = new XMLHttpRequest();
+      req.open('GET', 'https://api.adviceslip.com/advice', true);
+
+      req.responseType = 'text';
+
+      req.onload = () => {
+        if (req.readyState === req.DONE) {
+          if (req.status === 200) {
+            var array = req.response;
+            var id = "";
+            if(array[18] !== ',' && array[19] !== ","){
+              id = array[17]+""+ array[18]+""+ array[19];
+              array = array.slice(32,array.length-2)
+            }
+            else if(array[18] != ',')
+            {
+              id = array[17]+""+ array[18];
+              array = array.slice(31,array.length-2)
+            }
+            else{
+              id = array[17]+"";
+              array = array.slice(30,array.length-2)
+            }
+            document.querySelector(".cyan").textContent = 'Advice #' + id;
+            document.querySelector(".h1").textContent = array;       
+          }
+        }
+      };
+
+      req.send(null);
+    });
+    });
+  </script>
+</body>
+</html>
